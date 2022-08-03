@@ -23,13 +23,20 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/address"
-                android:textSize="24sp"
-                android:text="Location"
+                android:id="@+id/countryStudy"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:text="Kenya"
+                android:textSize="24sp">
 
             </TextView>
+
+            <TextView
+                android:id="@+id/countyStudy"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nakuru" />
+
             <TextView
                 android:id="@+id/updated_at"
                 android:textSize="14sp"
@@ -210,11 +217,13 @@
                         android:layout_height="wrap_content">
 
                     </Space>
+
                     <TextView
-                        android:text="Wind"
-                        android:textSize="12sp"
+                        android:id="@+id/dataWind"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:text="Wind"
+                        android:textSize="12sp">
 
                     </TextView>
                     <TextView

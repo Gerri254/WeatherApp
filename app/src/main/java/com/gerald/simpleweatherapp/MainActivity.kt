@@ -1,31 +1,63 @@
 package com.gerald.simpleweatherapp
 
-import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.ProgressBar
-import android.widget.RelativeLayout
+import android.util.Log
 import android.widget.TextView
-import org.json.JSONObject
-import java.net.URL
-import java.text.SimpleDateFormat
-import java.util.*
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 
 class MainActivity : AppCompatActivity() {
 
-    val City: String = "Kenya,Nakuru"
-    val API : String = "33a1019729b2893a9fdcfcfdf14014b7"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        weatherTask().execute()
+        /*weatherTask().execute()*/
+        val queue = Volley.newRequestQueue(this)
+        val weatherLink = "https://api.weatherapi.com/v1/current.json?key=f269d6ac5ca5477896375924220208&q=Nakuru"
+        val weatherRequest = JsonObjectRequest(Request.Method.GET,weatherLink,null,{
+           weatherJsonObject ->
+            val weatherArea = weatherJsonObject.getJSONObject("location")
+            val city = weatherArea.get("name")
+            val country = weatherArea.get("country")
+            val sumCondition = weatherJsonObject.getJSONObject("current")
+            val timeUpdate =sumCondition.get("last_updated")
+            val weatherCondition = sumCondition.get("text")
+            val tempNakuru = sumCondition.get("temp_c")
+            val skyState = sumCondition.get("cloud")
+            val windState = sumCondition.get("wind_dir")
+            val atmosphereState = sumCondition.get("pressure")
+            val humidityState = sumCondition.get("humidity")
+            val maxTemp = sumCondition.get("temp_c")
+            val minTemp = sumCondition.get("temp_c")
+
+
+            findViewById<TextView>(R.id.temp_max).text = maxTemp.toString().trim()
+            findViewById<TextView>(R.id.temp_min).text = minTemp.toString().trim()
+            findViewById<TextView>(R.id.countyStudy).text = city.toString().trim()
+           findViewById<TextView>(R.id.countryStudy).text = country.toString().trim()
+            findViewById<TextView>(R.id.updated_at).text = timeUpdate.toString()
+            findViewById<TextView>(R.id.status).text = weatherCondition.toString()
+            findViewById<TextView>(R.id.temp).text = tempNakuru.toString()
+            findViewById<TextView>(R.id.dataWind).text = skyState.toString()
+            findViewById<TextView>(R.id.wind).text = windState.toString()
+            findViewById<TextView>(R.id.pressure).text = atmosphereState.toString()
+            findViewById<TextView>(R.id.humidity).text = humidityState.toString()
+
+        },
+            {
+                    weatherError->
+                Log.d("WEATHER","onCreate: Error while fetching weather data",weatherError)
+
+            })
+        queue.add(weatherRequest)
     }
 
-    inner class weatherTask() : AsyncTask<String, Void, String>() {
+   /* inner class weatherTask() : AsyncTask<String, Void, String>() {
         override fun onPreExecute() {
             super.onPreExecute()
             findViewById<ProgressBar>(R.id.loader).visibility = View.VISIBLE
@@ -97,5 +129,5 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-    }
+    }*/
 }
